@@ -5,14 +5,14 @@ import { theme } from "./theme/theme";
 import Login from "./Login";
 import "./App.scss";
 import Dashboard from "./pages/Dashboard";
-import { RoleList } from "./role/RoleList";
-import { RoleCreate } from "./role/RoleCreate";
-import { RoleEdit } from "./role/RoleEdit";
-import { RoleShow } from "./role/RoleShow";
 import { PermissionList } from "./permission/PermissionList";
 import { PermissionCreate } from "./permission/PermissionCreate";
 import { PermissionEdit } from "./permission/PermissionEdit";
 import { PermissionShow } from "./permission/PermissionShow";
+import { RoleList } from "./role/RoleList";
+import { RoleCreate } from "./role/RoleCreate";
+import { RoleEdit } from "./role/RoleEdit";
+import { RoleShow } from "./role/RoleShow";
 import { UserRoleList } from "./userRole/UserRoleList";
 import { UserRoleCreate } from "./userRole/UserRoleCreate";
 import { UserRoleEdit } from "./userRole/UserRoleEdit";
@@ -48,18 +48,18 @@ const App = (): React.ReactElement => {
         loginPage={Login}
       >
         <Resource
-          name="Role"
-          list={RoleList}
-          edit={RoleEdit}
-          create={RoleCreate}
-          show={RoleShow}
-        />
-        <Resource
           name="Permission"
           list={PermissionList}
           edit={PermissionEdit}
           create={PermissionCreate}
           show={PermissionShow}
+        />
+        <Resource
+          name="Role"
+          list={RoleList}
+          edit={RoleEdit}
+          create={RoleCreate}
+          show={RoleShow}
         />
         <Resource
           name="UserRole"

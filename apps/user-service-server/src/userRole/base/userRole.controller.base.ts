@@ -49,11 +49,38 @@ export class UserRoleControllerBase {
     @common.Body() data: UserRoleCreateInput
   ): Promise<UserRole> {
     return await this.service.createUserRole({
-      data: data,
+      data: {
+        ...data,
+
+        role: data.role
+          ? {
+              connect: data.role,
+            }
+          : undefined,
+
+        user: data.user
+          ? {
+              connect: data.user,
+            }
+          : undefined,
+      },
       select: {
         createdAt: true,
         id: true,
+
+        role: {
+          select: {
+            id: true,
+          },
+        },
+
         updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
   }
@@ -77,7 +104,20 @@ export class UserRoleControllerBase {
       select: {
         createdAt: true,
         id: true,
+
+        role: {
+          select: {
+            id: true,
+          },
+        },
+
         updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
   }
@@ -102,7 +142,20 @@ export class UserRoleControllerBase {
       select: {
         createdAt: true,
         id: true,
+
+        role: {
+          select: {
+            id: true,
+          },
+        },
+
         updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
     if (result === null) {
@@ -132,11 +185,38 @@ export class UserRoleControllerBase {
     try {
       return await this.service.updateUserRole({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          role: data.role
+            ? {
+                connect: data.role,
+              }
+            : undefined,
+
+          user: data.user
+            ? {
+                connect: data.user,
+              }
+            : undefined,
+        },
         select: {
           createdAt: true,
           id: true,
+
+          role: {
+            select: {
+              id: true,
+            },
+          },
+
           updatedAt: true,
+
+          user: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
     } catch (error) {
@@ -169,7 +249,20 @@ export class UserRoleControllerBase {
         select: {
           createdAt: true,
           id: true,
+
+          role: {
+            select: {
+              id: true,
+            },
+          },
+
           updatedAt: true,
+
+          user: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
     } catch (error) {

@@ -1,61 +1,61 @@
 [
   {
     "role": "user",
-    "resource": "Role",
+    "resource": "Permission",
     "action": "read:own",
     "attributes": "*"
   },
   {
     "role": "user",
-    "resource": "Role",
+    "resource": "Permission",
     "action": "create:any",
     "attributes": "*"
   },
   {
     "role": "user",
-    "resource": "Role",
+    "resource": "Permission",
     "action": "update:any",
     "attributes": "*"
   },
   {
     "role": "user",
-    "resource": "Role",
+    "resource": "Permission",
     "action": "delete:any",
     "attributes": "*"
   },
   {
     "role": "user",
-    "resource": "Role",
+    "resource": "Permission",
     "action": "read:any",
     "attributes": "*"
   },
   {
     "role": "user",
-    "resource": "Permission",
+    "resource": "Role",
     "action": "read:own",
     "attributes": "*"
   },
   {
     "role": "user",
-    "resource": "Permission",
+    "resource": "Role",
     "action": "create:any",
     "attributes": "*"
   },
   {
     "role": "user",
-    "resource": "Permission",
+    "resource": "Role",
     "action": "update:any",
     "attributes": "*"
   },
   {
     "role": "user",
-    "resource": "Permission",
+    "resource": "Role",
     "action": "delete:any",
     "attributes": "*"
   },
   {
     "role": "user",
-    "resource": "Permission",
+    "resource": "Role",
     "action": "read:any",
     "attributes": "*"
   },

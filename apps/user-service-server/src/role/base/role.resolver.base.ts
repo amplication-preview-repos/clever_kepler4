@@ -18,11 +18,16 @@ import * as gqlACGuard from "../../auth/gqlAC.guard";
 import { GqlDefaultAuthGuard } from "../../auth/gqlDefaultAuth.guard";
 import * as common from "@nestjs/common";
 import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
+import { AclValidateRequestInterceptor } from "../../interceptors/aclValidateRequest.interceptor";
 import { Role } from "./Role";
 import { RoleCountArgs } from "./RoleCountArgs";
 import { RoleFindManyArgs } from "./RoleFindManyArgs";
 import { RoleFindUniqueArgs } from "./RoleFindUniqueArgs";
+import { CreateRoleArgs } from "./CreateRoleArgs";
+import { UpdateRoleArgs } from "./UpdateRoleArgs";
 import { DeleteRoleArgs } from "./DeleteRoleArgs";
+import { UserRoleFindManyArgs } from "../../userRole/base/UserRoleFindManyArgs";
+import { UserRole } from "../../userRole/base/UserRole";
 import { RoleService } from "../role.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
 @graphql.Resolver(() => Role)
@@ -73,6 +78,43 @@ export class RoleResolverBase {
     return result;
   }
 
+  @common.UseInterceptors(AclValidateRequestInterceptor)
+  @graphql.Mutation(() => Role)
+  @nestAccessControl.UseRoles({
+    resource: "Role",
+    action: "create",
+    possession: "any",
+  })
+  async createRole(@graphql.Args() args: CreateRoleArgs): Promise<Role> {
+    return await this.service.createRole({
+      ...args,
+      data: args.data,
+    });
+  }
+
+  @common.UseInterceptors(AclValidateRequestInterceptor)
+  @graphql.Mutation(() => Role)
+  @nestAccessControl.UseRoles({
+    resource: "Role",
+    action: "update",
+    possession: "any",
+  })
+  async updateRole(@graphql.Args() args: UpdateRoleArgs): Promise<Role | null> {
+    try {
+      return await this.service.updateRole({
+        ...args,
+        data: args.data,
+      });
+    } catch (error) {
+      if (isRecordNotFoundError(error)) {
+        throw new GraphQLError(
+          `No resource was found for ${JSON.stringify(args.where)}`
+        );
+      }
+      throw error;
+    }
+  }
+
   @graphql.Mutation(() => Role)
   @nestAccessControl.UseRoles({
     resource: "Role",
@@ -90,5 +132,25 @@ export class RoleResolverBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => [UserRole], { name: "userRoles" })
+  @nestAccessControl.UseRoles({
+    resource: "UserRole",
+    action: "read",
+    possession: "any",
+  })
+  async findUserRoles(
+    @graphql.Parent() parent: Role,
+    @graphql.Args() args: UserRoleFindManyArgs
+  ): Promise<UserRole[]> {
+    const results = await this.service.findUserRoles(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
   }
 }

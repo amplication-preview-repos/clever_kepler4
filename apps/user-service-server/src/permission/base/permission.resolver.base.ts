@@ -18,10 +18,13 @@ import * as gqlACGuard from "../../auth/gqlAC.guard";
 import { GqlDefaultAuthGuard } from "../../auth/gqlDefaultAuth.guard";
 import * as common from "@nestjs/common";
 import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
+import { AclValidateRequestInterceptor } from "../../interceptors/aclValidateRequest.interceptor";
 import { Permission } from "./Permission";
 import { PermissionCountArgs } from "./PermissionCountArgs";
 import { PermissionFindManyArgs } from "./PermissionFindManyArgs";
 import { PermissionFindUniqueArgs } from "./PermissionFindUniqueArgs";
+import { CreatePermissionArgs } from "./CreatePermissionArgs";
+import { UpdatePermissionArgs } from "./UpdatePermissionArgs";
 import { DeletePermissionArgs } from "./DeletePermissionArgs";
 import { PermissionService } from "../permission.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
@@ -75,6 +78,47 @@ export class PermissionResolverBase {
       return null;
     }
     return result;
+  }
+
+  @common.UseInterceptors(AclValidateRequestInterceptor)
+  @graphql.Mutation(() => Permission)
+  @nestAccessControl.UseRoles({
+    resource: "Permission",
+    action: "create",
+    possession: "any",
+  })
+  async createPermission(
+    @graphql.Args() args: CreatePermissionArgs
+  ): Promise<Permission> {
+    return await this.service.createPermission({
+      ...args,
+      data: args.data,
+    });
+  }
+
+  @common.UseInterceptors(AclValidateRequestInterceptor)
+  @graphql.Mutation(() => Permission)
+  @nestAccessControl.UseRoles({
+    resource: "Permission",
+    action: "update",
+    possession: "any",
+  })
+  async updatePermission(
+    @graphql.Args() args: UpdatePermissionArgs
+  ): Promise<Permission | null> {
+    try {
+      return await this.service.updatePermission({
+        ...args,
+        data: args.data,
+      });
+    } catch (error) {
+      if (isRecordNotFoundError(error)) {
+        throw new GraphQLError(
+          `No resource was found for ${JSON.stringify(args.where)}`
+        );
+      }
+      throw error;
+    }
   }
 
   @graphql.Mutation(() => Permission)

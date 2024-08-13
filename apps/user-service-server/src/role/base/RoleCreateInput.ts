@@ -9,5 +9,42 @@ https://docs.amplication.com/how-to/custom-code
 
 ------------------------------------------------------------------------------
   */
-class RoleCreateInput {}
+import { InputType, Field } from "@nestjs/graphql";
+import { ApiProperty } from "@nestjs/swagger";
+import {
+  IsString,
+  MaxLength,
+  IsOptional,
+  ValidateNested,
+} from "class-validator";
+import { UserRoleCreateNestedManyWithoutRolesInput } from "./UserRoleCreateNestedManyWithoutRolesInput";
+import { Type } from "class-transformer";
+
+@InputType()
+class RoleCreateInput {
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @MaxLength(1000)
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  name?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => UserRoleCreateNestedManyWithoutRolesInput,
+  })
+  @ValidateNested()
+  @Type(() => UserRoleCreateNestedManyWithoutRolesInput)
+  @IsOptional()
+  @Field(() => UserRoleCreateNestedManyWithoutRolesInput, {
+    nullable: true,
+  })
+  userRoles?: UserRoleCreateNestedManyWithoutRolesInput;
+}
+
 export { RoleCreateInput as RoleCreateInput };

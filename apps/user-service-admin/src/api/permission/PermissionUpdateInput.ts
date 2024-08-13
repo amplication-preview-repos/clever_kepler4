@@ -1,1 +1,4 @@
-export type PermissionUpdateInput = {};
+export type PermissionUpdateInput = {
+  description?: string | null;
+  name?: string | null;
+};

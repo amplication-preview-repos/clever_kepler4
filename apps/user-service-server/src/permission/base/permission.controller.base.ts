@@ -52,7 +52,9 @@ export class PermissionControllerBase {
       data: data,
       select: {
         createdAt: true,
+        description: true,
         id: true,
+        name: true,
         updatedAt: true,
       },
     });
@@ -76,7 +78,9 @@ export class PermissionControllerBase {
       ...args,
       select: {
         createdAt: true,
+        description: true,
         id: true,
+        name: true,
         updatedAt: true,
       },
     });
@@ -101,7 +105,9 @@ export class PermissionControllerBase {
       where: params,
       select: {
         createdAt: true,
+        description: true,
         id: true,
+        name: true,
         updatedAt: true,
       },
     });
@@ -135,7 +141,9 @@ export class PermissionControllerBase {
         data: data,
         select: {
           createdAt: true,
+          description: true,
           id: true,
+          name: true,
           updatedAt: true,
         },
       });
@@ -168,7 +176,9 @@ export class PermissionControllerBase {
         where: params,
         select: {
           createdAt: true,
+          description: true,
           id: true,
+          name: true,
           updatedAt: true,
         },
       });
